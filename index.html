@@ -4,126 +4,148 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>RifqyDashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Poppins', sans-serif;
-      background: #121212;
-      color: #f0f0f0;
-      overflow-x: hidden;
-    }
-    h1 {
-      text-align: center;
-      font-size: 1.6em;
-      margin: 20px 0;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 15px;
-      padding: 0 15px 30px;
-    }
-    .card {
-      background: #1e1e1e;
-      border-radius: 12px;
-      padding: 16px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-      transition: transform 0.2s ease;
-    }
-    .card:hover {
-      transform: scale(1.02);
-    }
-    .card h2 {
-      margin: 0 0 8px;
-      font-size: 1.2em;
-    }
-    .card p {
-      margin: 0 0 12px;
-      font-size: 0.95em;
-      color: #ccc;
-    }
-    .link-btn {
-      display: inline-block;
-      padding: 8px 14px;
-      background: #007bff;
-      color: white;
-      border-radius: 6px;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.9em;
-    }
-    @media (min-width: 600px) {
-      .grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
+    :root { --primary: #007bff; }
+    html, body { margin:0; padding:0; font-family:'Poppins',sans-serif; background:#121212; color:#f0f0f0; overflow-x:hidden; }
+    h1 { text-align:center; font-size:2.2em; font-weight:700; margin:30px 0 10px; background:linear-gradient(to right,#c084fc,#f472b6); -webkit-background-clip:text; background-clip:text; color:transparent; }
+    .subtitle { text-align:center; font-size:1em; color:#aaa; margin-bottom:30px; }
+    .grid { display:grid; grid-template-columns:1fr; gap:18px; padding:0 18px 40px; max-width:1200px; margin:0 auto; }
+    .card { background:#1e1e1e; border-radius:16px; padding:20px; box-shadow:0 4px 12px rgba(0,0,0,0.4); transition:transform .25s ease, box-shadow .25s ease; }
+    .card:hover { transform:translateY(-6px); box-shadow:0 12px 24px rgba(0,0,0,0.5); }
+    .card h2 { margin:0 0 10px; font-size:1.35em; font-weight:600; display:flex; align-items:center; gap:10px; }
+    .card p { margin:0 0 16px; font-size:0.95em; color:#ccc; line-height:1.5; }
+    .link-btn { display:inline-block; padding:10px 18px; background:var(--primary); color:white; border-radius:8px; text-decoration:none; font-weight:600; font-size:0.95em; transition:background .25s; }
+    .link-btn:hover { background:#0056b3; }
+    @media (min-width:640px) { .grid { grid-template-columns:repeat(2,1fr); } }
+    @media (min-width:1024px) { .grid { grid-template-columns:repeat(3,1fr); } }
   </style>
 </head>
 <body>
+
   <h1>RifqyDashboard</h1>
+  <p class="subtitle" data-id="Pusat semua proyek & tools dari RifqyDev" data-en="Hub for all projects & tools by RifqyDev"></p>
+
   <div class="grid">
+
+    <!-- ArchiveMods -->
     <div class="card">
-      <h2>🗃️ ArchiveMods</h2>
-      <p>Portal arsip modifikasi, eksperimen, dan tools digital dari RifqyDev.</p>
-      <a href="https://rifqydev.my.id" class="link-btn">Buka ArchiveMods</a>
+      <h2>ArchiveMods</h2>
+      <p data-id="Portal arsip modifikasi, eksperimen, dan tools digital dari RifqyDev."
+         data-en="Archive portal for modifications, experiments, and digital tools by RifqyDev.">Portal arsip modifikasi, eksperimen, dan tools digital dari RifqyDev.</p>
+      <a href="https://rifqydev.my.id" class="link-btn" data-id="Buka ArchiveMods" data-en="Open ArchiveMods">Buka ArchiveMods</a>
     </div>
+
+    <!-- RifqyMaps -->
     <div class="card">
-      <h2>🗺️ RifqyMaps</h2>
-      <p>Jelajahi lokasi, cari tempat menarik, dan integrasi peta untuk semua kebutuhanmu.</p>
-      <a href="https://maps.rifqydev.my.id" class="link-btn">Buka RifqyMaps</a>
+      <h2>RifqyMaps</h2>
+      <p data-id="Jelajahi lokasi dan integrasi peta untuk semua kebutuhanmu."
+         data-en="Explore locations and map integration for all your needs.">Jelajahi lokasi dan integrasi peta untuk semua kebutuhanmu.</p>
+      <a href="https://maps.rifqydev.my.id" class="link-btn" data-id="Buka RifqyMaps" data-en="Open RifqyMaps">Buka RifqyMaps</a>
     </div>
+
+    <!-- RifqyTask -->
     <div class="card">
-      <h2>📋 RifqyTask</h2>
-      <p>Kelola dan pantau tugasmu dengan tampilan modern dan progress tracker.</p>
-      <a href="https://task.rifqydev.my.id" class="link-btn">Buka RifqyTask</a>
+      <h2>RifqyTask</h2>
+      <p data-id="Kelola tugas dengan tampilan modern dan progress tracker."
+         data-en="Manage tasks with a modern interface and progress tracking.">Kelola tugas dengan tampilan modern dan progress tracker.</p>
+      <a href="https://task.rifqydev.my.id" class="link-btn" data-id="Buka RifqyTask" data-en="Open RifqyTask">Buka RifqyTask</a>
     </div>
+
+    <!-- RifqyNotes -->
     <div class="card">
-      <h2>📝 RifqyNotes</h2>
-      <p>Catat ide, belajar, atau to-do dengan markdown preview dan kategori.</p>
-      <a href="https://notes.rifqydev.my.id" class="link-btn">Buka RifqyNotes</a>
+      <h2>RifqyNotes</h2>
+      <p data-id="Catat ide dengan dukungan markdown dan kategori."
+         data-en="Take notes with markdown support and categorization.">Catat ide dengan dukungan markdown dan kategori.</p>
+      <a href="https://notes.rifqydev.my.id" class="link-btn" data-id="Buka RifqyNotes" data-en="Open RifqyNotes">Buka RifqyNotes</a>
     </div>
+
+    <!-- RifqyStudy -->
     <div class="card">
-      <h2>📚 RifqyStudy</h2>
-      <p>Belajar interaktif dengan quiz, flashcard, dan latihan soal yang bisa kamu sesuaikan.</p>
-      <a href="https://study.rifqydev.my.id" class="link-btn">Buka RifqyStudy</a>
+      <h2>RifqyStudy</h2>
+      <p data-id="Belajar interaktif dengan quiz, flashcard, dan latihan soal."
+         data-en="Interactive learning with quizzes, flashcards, and exercises.">Belajar interaktif dengan quiz, flashcard, dan latihan soal.</p>
+      <a href="https://study.rifqydev.my.id" class="link-btn" data-id="Buka RifqyStudy" data-en="Open RifqyStudy">Buka RifqyStudy</a>
     </div>
+
+    <!-- RifqyConverter -->
     <div class="card">
-      <h2>🔢 RifqyConverter</h2>
-      <p>Konversi satuan, mata uang, dan data dengan cepat dan akurat.</p>
-      <a href="https://converter.rifqydev.my.id" class="link-btn">Buka RifqyConverter</a>
+      <h2>RifqyConverter</h2>
+      <p data-id="Konversi satuan, mata uang, dan data dengan cepat."
+         data-en="Fast unit, currency, and data conversion.">Konversi satuan, mata uang, dan data dengan cepat.</p>
+      <a href="https://converter.rifqydev.my.id" class="link-btn" data-id="Buka RifqyConverter" data-en="Open Converter">Buka RifqyConverter</a>
     </div>
+
+    <!-- RifqyCompress -->
     <div class="card">
-      <h2>🗜️ RifqyCompress</h2>
-      <p>Kompres gambar dan file langsung dari browser tanpa install apapun.</p>
-      <a href="https://compress.rifqydev.my.id" class="link-btn">Buka RifqyCompress</a>
+      <h2>RifqyCompress</h2>
+      <p data-id="Kompres gambar dan file langsung di browser."
+         data-en="Compress images and files directly in the browser.">Kompres gambar dan file langsung di browser.</p>
+      <a href="https://compress.rifqydev.my.id" class="link-btn" data-id="Buka RifqyCompress" data-en="Open Compressor">Buka RifqyCompress</a>
     </div>
+
+    <!-- RifqyCalory -->
     <div class="card">
-      <h2>🔥 RifqyCalory</h2>
-      <p>Hitung kalori makanan dan pantau asupan harianmu dengan mudah.</p>
-      <a href="https://calory.rifqydev.my.id" class="link-btn">Buka RifqyCalory</a>
+      <h2>RifqyCalory</h2>
+      <p data-id="Hitung kalori makanan dan pantau asupan harian."
+         data-en="Track daily calorie intake and food nutrition.">Hitung kalori makanan dan pantau asupan harian.</p>
+      <a href="https://calory.rifqydev.my.id" class="link-btn" data-id="Buka RifqyCalory" data-en="Open Calory Tracker">Buka RifqyCalory</a>
     </div>
+
+    <!-- RifqyWeather -->
     <div class="card">
-      <h2>🌦️ RifqyWeather</h2>
-      <p>Lihat cuaca harian dan prakiraan lokal dengan tampilan minimalis.</p>
-      <a href="https://weather.rifqydev.my.id" class="link-btn">Buka RifqyWeather</a>
+      <h2>RifqyWeather</h2>
+      <p data-id="Prakiraan cuaca lokal dengan tampilan minimalis."
+         data-en="Local weather forecast with a minimal interface.">Prakiraan cuaca lokal dengan tampilan minimalis.</p>
+      <a href="https://weather.rifqydev.my.id" class="link-btn" data-id="Buka RifqyWeather" data-en="Open Weather">Buka RifqyWeather</a>
     </div>
+
+    <!-- RifqyTranslate -->
     <div class="card">
-      <h2>🌐 RifqyTranslate</h2>
-      <p>Terjemahkan teks antar bahasa dengan cepat dan dukungan multi-bahasa.</p>
-      <a href="https://translate.rifqydev.my.id" class="link-btn">Buka RifqyTranslate</a>
+      <h2>RifqyTranslate</h2>
+      <p data-id="Terjemahkan teks antar bahasa dengan cepat."
+         data-en="Instant text translation between multiple languages.">Terjemahkan teks antar bahasa dengan cepat.</p>
+      <a href="https://translate.rifqydev.my.id" class="link-btn" data-id="Buka RifqyTranslate" data-en="Open Translator">Buka RifqyTranslate</a>
     </div>
+
+    <!-- RifqyQR -->
     <div class="card">
-      <h2>📦 RifqyQR</h2>
-      <p>Buat dan scan QR code untuk link, teks, dan data lainnya secara instan.</p>
-      <a href="https://qr.rifqydev.my.id" class="link-btn">Buka RifqyQR</a>
+      <h2>RifqyQR</h2>
+      <p data-id="Buat dan scan QR code secara instan."
+         data-en="Generate and scan QR codes instantly.">Buat dan scan QR code secara instan.</p>
+      <a href="https://qr.rifqydev.my.id" class="link-btn" data-id="Buka RifqyQR" data-en="Open QR Tool">Buka RifqyQR</a>
     </div>
+
+    <!-- RifqyBudget -->
     <div class="card">
-      <h2>💰 RifqyBudget</h2>
-      <p>Kelola keuangan pribadi, pantau pengeluaran, dan rencanakan anggaran dengan mudah.</p>
-      <a href="https://budget.rifqydev.my.id" class="link-btn">Buka RifqyBudget</a>
+      <h2>RifqyBudget</h2>
+      <p data-id="Kelola keuangan pribadi dan rencanakan anggaran."
+         data-en="Personal finance manager and budget planner.">Kelola keuangan pribadi dan rencanakan anggaran.</p>
+      <a href="https://budget.rifqydev.my.id" class="link-btn" data-id="Buka RifqyBudget" data-en="Open Budget">Buka RifqyBudget</a>
     </div>
+
+    <!-- RifqyPaste (BARU & DIPERBARUI) -->
+    <div class="card">
+      <h2>RifqyPaste</h2>
+      <p data-id="Pastebin pribadi — bagikan teks, kode, atau catatan dengan aman dan cepat."
+         data-en="Private pastebin — securely and quickly share text, code, or notes.">Pastebin pribadi — bagikan teks, kode, atau catatan dengan aman dan cepat.</p>
+      <a href="https://paste.rifqydev.my.id" class="link-btn" data-id="Buka RifqyPaste" data-en="Open RifqyPaste">Buka RifqyPaste</a>
+    </div>
+
   </div>
+
+  <script>
+    // Auto detect bahasa sistem (Indonesia / English)
+    const userLang = (navigator.language || navigator.userLanguage || 'id').toLowerCase();
+    const isID = userLang.startsWith('id');
+
+    // Terjemahkan otomatis semua elemen yang punya data-id / data-en
+    document.querySelectorAll('[data-id],[data-en]').forEach(el => {
+      el.textContent = isID ? el.dataset.id : el.dataset.en;
+    });
+
+    // Update title & subtitle juga
+    document.title = isID ? "RifqyDashboard" : "RifqyDev Dashboard";
+  </script>
 </body>
 </html>
