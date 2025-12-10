@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RifqyDashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --glass-bg: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --card-hover: rgba(255, 255, 255, 0.1);
+      --text-color: #ffffff;
+      --text-secondary: #a0a0a0;
+      --accent-color: #00d2ff;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #0f0c29;  /* Fallback */
+      background: linear-gradient(315deg, #0f0c29 0%, #302b63 74%, #24243e 100%);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      color: var(--text-color);
+      min-height: 100vh;
+    }
+
+    /* Animasi Background Bergerak */
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Header Style */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 5%;
+      background: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid var(--glass-border);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      font-size: 1.8em;
+      margin: 0;
+      font-weight: 700;
+      background: linear-gradient(to right, #00c6ff, #0072ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 1px;
+    }
+
+    /* Tombol Bahasa */
+    .lang-toggle button {
+      margin-left: 10px;
+      padding: 8px 16px;
+      border: 1px solid var(--glass-border);
+      border-radius: 50px;
+      background: var(--glass-bg);
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      font-size: 1.2em;
+    }
+
+    .lang-toggle button:hover {
+      background: var(--primary-gradient);
+      transform: scale(1.1);
+      box-shadow: 0 0 15px rgba(118, 75, 162, 0.5);
+    }
+
+    /* Grid Layout */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+      padding: 40px 5%;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    /* Card Style (Glassmorphism) */
+    .card {
+      background: var(--glass-bg);
+      border-radius: 20px;
+      padding: 25px;
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* Efek Glow saat Hover */
+    .card:hover {
+      transform: translateY(-10px) scale(1.02);
+      background: var(--card-hover);
+      border-color: rgba(255, 255, 255, 0.3);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 
+                  0 0 20px rgba(0, 210, 255, 0.2); 
+    }
+
+    /* Dekorasi Glow di dalam card */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+      transform: rotate(45deg);
+      opacity: 0;
+      transition: opacity 0.5s;
+      pointer-events: none;
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card h2 {
+      margin: 0 0 15px;
+      font-size: 1.5em;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .card p {
+      margin: 0 0 20px;
+      font-size: 0.95em;
+      color: #d1d1d1;
+      line-height: 1.6;
+      flex-grow: 1;
+    }
+
+    /* Button Link Style */
+    .link-btn {
+      display: inline-block;
+      padding: 12px 24px;
+      background: var(--primary-gradient);
+      color: white;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95em;
+      text-align: center;
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 2;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .link-btn:hover {
+      filter: brightness(1.2);
+      box-shadow: 0 0 20px rgba(102, 126, 234, 0.6);
+      transform: translateY(-2px);
+    }
+
+    /* Responsiveness */
+    @media (max-width: 600px) {
+      header {
+        padding: 15px;
+      }
+      h1 {
+        font-size: 1.4em;
+      }
+      .grid {
+        grid-template-columns: 1fr;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1 id="title">RifqyDashboard</h1>
+    <div class="lang-toggle">
+      <button id="btnID">🇮🇩</button>
+      <button id="btnEN">🇬🇧</button>
+    </div>
+  </header>
+
+  <div class="grid">
+    <div class="card"><h2>🗃️ ArchiveMods</h2><p id="archiveDesc"></p><a href="https://rifqydev.my.id" class="link-btn" id="archiveBtn"></a></div>
+    <div class="card"><h2>🗺️ RifqyMaps</h2><p id="mapsDesc"></p><a href="https://maps.rifqydev.my.id" class="link-btn" id="mapsBtn"></a></div>
+    <div class="card"><h2>📋 RifqyTask</h2><p id="taskDesc"></p><a href="https://task.rifqydev.my.id" class="link-btn" id="taskBtn"></a></div>
+    <div class="card"><h2>📝 RifqyNotes</h2><p id="notesDesc"></p><a href="https://notes.rifqydev.my.id" class="link-btn" id="notesBtn"></a></div>
+    <div class="card"><h2>📚 RifqyStudy</h2><p id="studyDesc"></p><a href="https://study.rifqydev.my.id" class="link-btn" id="studyBtn"></a></div>
+    <div class="card"><h2>🔢 RifqyConverter</h2><p id="converterDesc"></p><a href="https://converter.rifqydev.my.id" class="link-btn" id="converterBtn"></a></div>
+    <div class="card"><h2>🗜️ RifqyCompress</h2><p id="compressDesc"></p><a href="https://compress.rifqydev.my.id" class="link-btn" id="compressBtn"></a></div>
+    <div class="card"><h2>🔥 RifqyCalory</h2><p id="caloryDesc"></p><a href="https://calory.rifqydev.my.id" class="link-btn" id="caloryBtn"></a></div>
+    <div class="card"><h2>🌦️ RifqyWeather</h2><p id="weatherDesc"></p><a href="https://weather.rifqydev.my.id" class="link-btn" id="weatherBtn"></a></div>
+    <div class="card"><h2>🌐 RifqyTranslate</h2><p id="translateDesc"></p><a href="https://translate.rifqydev.my.id" class="link-btn" id="translateBtn"></a></div>
+    <div class="card"><h2>📦 RifqyQR</h2><p id="qrDesc"></p><a href="https://qr.rifqydev.my.id" class="link-btn" id="qrBtn"></a></div>
+    <div class="card"><h2>💰 RifqyBudget</h2><p id="budgetDesc"></p><a href="https://budget.rifqydev.my.id" class="link-btn" id="budgetBtn"></a></div>
+    <div class="card"><h2>📑 RifqyPaste</h2><p id="pasteDesc"></p><a href="https://paste.rifqydev.my.id" class="link-btn" id="pasteBtn"></a></div>
+  </div>
+
+  <script>
+  const dict = {
+    id: {
+      title: "RifqyDashboard",
+      archiveDesc: "Portal arsip modifikasi, eksperimen, dan tools digital dari RifqyDev.",
+      archiveBtn: "Buka",
+      mapsDesc: "Jelajahi lokasi, cari tempat menarik, dan integrasi peta untuk semua kebutuhanmu.",
+      mapsBtn: "Buka",
+      taskDesc: "Kelola dan pantau tugasmu dengan tampilan modern dan progress tracker.",
+      taskBtn: "Buka",
+      notesDesc: "Catat ide, belajar, atau to-do dengan markdown preview dan kategori.",
+      notesBtn: "Buka",
+      studyDesc: "Belajar interaktif dengan quiz, flashcard, dan latihan soal yang bisa kamu sesuaikan.",
+      studyBtn: "Buka",
+      converterDesc: "Konversi satuan, mata uang, dan data dengan cepat dan akurat.",
+      converterBtn: "Buka",
+      compressDesc: "Kompres gambar dan file langsung dari browser tanpa install apapun.",
+      compressBtn: "Buka",
+      caloryDesc: "Hitung kalori makanan dan pantau asupan harianmu dengan mudah.",
+      caloryBtn: "Buka",
+      weatherDesc: "Lihat cuaca harian dan prakiraan lokal dengan tampilan minimalis.",
+      weatherBtn: "Buka",
+      translateDesc: "Terjemahkan teks antar bahasa dengan cepat dan dukungan multi-bahasa.",
+      translateBtn: "Buka",
+      qrDesc: "Buat dan scan QR code untuk link, teks, dan data lainnya secara instan.",
+      qrBtn: "Buka",
+      budgetDesc: "Kelola keuangan pribadi, pantau pengeluaran, dan rencanakan anggaran dengan mudah.",
+      budgetBtn: "Buka",
+      pasteDesc: "Berbagi teks, catatan, atau kode dengan cepat melalui pastebin pribadi RifqyDev.",
+      pasteBtn: "Buka"
+    },
+    en: {
+      title: "RifqyDashboard",
+      archiveDesc: "Archive portal for mods, experiments, and digital tools from RifqyDev.",
+      archiveBtn: "Open",
+      mapsDesc: "Explore locations, find interesting places, and map integration for all your needs.",
+      mapsBtn: "Open",
+      taskDesc: "Manage and track your tasks with a modern view and progress tracker.",
+      taskBtn: "Open",
+      notesDesc: "Write ideas, study notes, or to-do lists with markdown preview and categories.",
+      notesBtn: "Open",
+      studyDesc: "Interactive learning with quizzes, flashcards, and customizable practice exercises.",
+      studyBtn: "Open",
+      converterDesc: "Convert units, currencies, and data quickly and accurately.",
+      converterBtn: "Open",
+      compressDesc: "Compress images and files directly from your browser without installing anything.",
+      compressBtn: "Open",
+      caloryDesc: "Calculate food calories and track your daily intake easily.",
+      caloryBtn: "Open",
+      weatherDesc: "View daily weather and local forecasts with a minimalist design.",
+      weatherBtn: "Open",
+      translateDesc: "Translate text between languages quickly with multi-language support.",
+      translateBtn: "Open",
+      qrDesc: "Generate and scan QR codes instantly for links, text, and other data.",
+      qrBtn: "Open",
+      budgetDesc: "Manage personal finances, track expenses, and plan budgets easily.",
+      budgetBtn: "Open",
+      pasteDesc: "Share text, notes, or code quickly via RifqyDev's personal pastebin.",
+      pasteBtn: "Open"
+    }
+  };
+
+  function setLang(lang) {
+    document.getElementById("title").textContent = dict[lang].title;
+    document.getElementById("archiveDesc").textContent = dict[lang].archiveDesc;
+    document.getElementById("archiveBtn").textContent = dict[lang].archiveBtn;
+    document.getElementById("mapsDesc").textContent = dict[lang].mapsDesc;
+    document.getElementById("mapsBtn").textContent = dict[lang].mapsBtn;
+    document.getElementById("taskDesc").textContent = dict[lang].taskDesc;
+    document.getElementById("taskBtn").textContent = dict[lang].taskBtn;
+    document.getElementById("notesDesc").textContent = dict[lang].notesDesc;
+    document.getElementById("notesBtn").textContent = dict[lang].notesBtn;
+    document.getElementById("studyDesc").textContent = dict[lang].studyDesc;
+    document.getElementById("studyBtn").textContent = dict[lang].studyBtn;
+    document.getElementById("converterDesc").textContent = dict[lang].converterDesc;
+    document.getElementById("converterBtn").textContent = dict[lang].converterBtn;
+    document.getElementById("compressDesc").textContent = dict[lang].compressDesc;
+    document.getElementById("compressBtn").textContent = dict[lang].compressBtn;
+    document.getElementById("caloryDesc").textContent = dict[lang].caloryDesc;
+    document.getElementById("caloryBtn").textContent = dict[lang].caloryBtn;
+    document.getElementById("weatherDesc").textContent = dict[lang].weatherDesc;
+    document.getElementById("weatherBtn").textContent = dict[lang].weatherBtn;
+    document.getElementById("translateDesc").textContent = dict[lang].translateDesc;
+    document.getElementById("translateBtn").textContent = dict[lang].translateBtn;
+    document.getElementById("qrDesc").textContent = dict[lang].qrDesc;
+    document.getElementById("qrBtn").textContent = dict[lang].qrBtn;
+    document.getElementById("budgetDesc").textContent = dict[lang].budgetDesc;
+    document.getElementById("budgetBtn").textContent = dict[lang].budgetBtn;
+    document.getElementById("pasteDesc").textContent = dict[lang].pasteDesc;
+    document.getElementById("pasteBtn").textContent = dict[lang].pasteBtn;
+  }
+
+  // Default: sesuai sistem
+  const userLang = navigator.language.startsWith("id") ? "id" : "en";
+  setLang(userLang);
+
+  // Toggle manual
+  document.getElementById("btnID").addEventListener("click", () => setLang("id"));
+  document.getElementById("btnEN").addEventListener("click", () => setLang("en"));
+  </script>
+</body>
+</html>
