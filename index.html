@@ -87,6 +87,38 @@
       letter-spacing: 2px;
     }
 
+    /* HEADER CONTROLS (SEARCH + LANG) */
+    .header-controls {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    /* SEARCH INPUT */
+    .search-input {
+      background: rgba(20, 20, 35, 0.8);
+      color: #fff;
+      border: 1px solid var(--card-border);
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      width: 250px;
+    }
+
+    .search-input:focus {
+      border-color: var(--primary-glow);
+      box-shadow: 0 0 10px rgba(0, 210, 255, 0.2);
+    }
+
+    .search-input::placeholder {
+      color: var(--text-muted);
+    }
+
     /* LANGUAGE SELECTOR */
     .lang-selector {
       background: rgba(20, 20, 35, 0.8);
@@ -252,22 +284,27 @@
     @media (max-width: 600px) {
       .grid { padding: 20px; gap: 16px; }
       header { flex-direction: column; align-items: flex-start; }
-      .lang-selector { width: 100%; }
+      .header-controls { width: 100%; }
+      .search-input { width: 100%; }
+      .lang-selector { flex-grow: 1; }
     }
   </style>
 </head>
 <body>
   <header>
     <h1 id="title">RifqyDashboard</h1>
-    <select id="langSelector" class="lang-selector">
-      <option value="en" selected>🇬🇧 English (Default)</option>
-      <option value="id">🇮🇩 Indonesia</option>
-      <option value="es">🇪🇸 Español</option>
-      <option value="ja">🇯🇵 日本語 (Japanese)</option>
-      <option value="ar">🇸🇦 العربية (Arabic)</option>
-      <option value="fr">🇫🇷 Français</option>
-      <option value="ko">🇰🇷 한국어 (Korean)</option>
-    </select>
+    <div class="header-controls">
+      <input type="text" id="searchInput" class="search-input" placeholder="🔍 Search repository..." autocomplete="off" />
+      <select id="langSelector" class="lang-selector">
+        <option value="en" selected>🇬🇧 English (Default)</option>
+        <option value="id">🇮🇩 Indonesia</option>
+        <option value="es">🇪🇸 Español</option>
+        <option value="ja">🇯🇵 日本語 (Japanese)</option>
+        <option value="ar">🇸🇦 العربية (Arabic)</option>
+        <option value="fr">🇫🇷 Français</option>
+        <option value="ko">🇰🇷 한국어 (Korean)</option>
+      </select>
+    </div>
   </header>
 
   <div class="grid" id="dashboard-grid">
@@ -277,15 +314,17 @@
   // ==========================================
   // KONFIGURASI UTAMA
   // ==========================================
-  const GITHUB_USERNAME = "rydevs29";
+  const GITHUB_USERNAME = "rifqydev";
   
   // ==========================================
 
   const gridContainer = document.getElementById("dashboard-grid");
   const langSelector = document.getElementById("langSelector");
+  const searchInput = document.getElementById("searchInput");
 
-  let repositories = []; // Menyimpan data mentah dari GitHub
-  let translationCache = {}; // Cache terjemahan: { "Teks Asli": { "id": "Teks Indo", "ja": "Teks Jepang" } }
+  let repositories = []; 
+  let translationCache = {}; 
+  let currentSearchQuery = "";
 
   // 1. Tampilkan Efek Loading (Skeleton)
   function showSkeletons() {
@@ -303,14 +342,13 @@
   // 2. Ambil SEMUA Repository dari GitHub
   async function fetchAllGitHubRepos() {
     try {
-      // Mengambil maksimal 100 repo publik, diurutkan dari yang terbaru di-update
       const response = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100&sort=updated`);
       
       if (!response.ok) throw new Error("Gagal mengambil data dari GitHub API");
       
       const data = await response.json();
       
-      // Filter opsional: Sembunyikan repository hasil fork (opsional, hapus .filter jika ingin tampilkan semua)
+      // Sembunyikan repository hasil fork
       repositories = data.filter(repo => !repo.fork);
 
       if (repositories.length === 0) {
@@ -326,12 +364,11 @@
     }
   }
 
-  // 3. Fungsi Translate via Google Translate API (Gratis / Client-side)
+  // 3. Fungsi Translate via Google Translate API
   async function translateText(text, targetLang) {
     if (!text) return "";
-    if (targetLang === 'en') return text; // Default GitHub
+    if (targetLang === 'en') return text; 
 
-    // Cek apakah sudah ada di cache
     if (translationCache[text] && translationCache[text][targetLang]) {
       return translationCache[text][targetLang];
     }
@@ -342,48 +379,57 @@
       const data = await response.json();
       const translated = data[0].map(item => item[0]).join("");
       
-      // Simpan ke cache
       if (!translationCache[text]) translationCache[text] = {};
       translationCache[text][targetLang] = translated;
 
       return translated;
     } catch (error) {
       console.error("Translation Error:", error);
-      return text; // Jika gagal, kembalikan teks aslinya
+      return text; 
     }
   }
 
-  // 4. Render Kartu ke Layar
+  // 4. Render Kartu ke Layar dengan Sistem Filter
   async function renderDashboard() {
     const selectedLang = langSelector.value;
     
-    // Tentukan teks tombol berdasarkan bahasa
+    // Setup teks berdasarkan bahasa
     let btnText = "Open Repository";
-    if (selectedLang === "id") btnText = "Buka Repository";
-    else if (selectedLang === "es") btnText = "Abrir Repositorio";
-    else if (selectedLang === "ja") btnText = "リポジトリを開く";
-    else if (selectedLang === "ar") btnText = "افتح المستودع";
-    else if (selectedLang === "fr") btnText = "Ouvrir le Dépôt";
-    else if (selectedLang === "ko") btnText = "저장소 열기";
+    if (selectedLang === "id") { btnText = "Buka Repository"; searchInput.placeholder = "🔍 Cari repository..."; }
+    else if (selectedLang === "es") { btnText = "Abrir Repositorio"; searchInput.placeholder = "🔍 Buscar repositorio..."; }
+    else if (selectedLang === "ja") { btnText = "リポジトリを開く"; searchInput.placeholder = "🔍 リポジトリを検索..."; }
+    else if (selectedLang === "ar") { btnText = "افتح المستودع"; searchInput.placeholder = "🔍 البحث في المستودع..."; }
+    else if (selectedLang === "fr") { btnText = "Ouvrir le Dépôt"; searchInput.placeholder = "🔍 Rechercher un dépôt..."; }
+    else if (selectedLang === "ko") { btnText = "저장소 열기"; searchInput.placeholder = "🔍 저장소 검색..."; }
+    else { searchInput.placeholder = "🔍 Search repository..."; }
 
-    // Bersihkan grid
-    gridContainer.innerHTML = "";
+    // Proses Filtering
+    const filteredRepos = repositories.filter(repo => {
+      const repoName = repo.name.toLowerCase();
+      const repoDesc = (repo.description || "").toLowerCase();
+      return repoName.includes(currentSearchQuery) || repoDesc.includes(currentSearchQuery);
+    });
 
-    // Loop semua repo dan buat HTML-nya
-    for (const repo of repositories) {
-      // Siapkan deskripsi
+    gridContainer.innerHTML = ""; // Bersihkan grid
+
+    // Jika hasil pencarian kosong
+    if (filteredRepos.length === 0) {
+      gridContainer.innerHTML = `<div class="status-msg">Tidak ada repository yang cocok dengan "<b>${currentSearchQuery}</b>".</div>`;
+      return;
+    }
+
+    // Loop repo yang sudah di-filter
+    for (const repo of filteredRepos) {
       let rawDesc = repo.description || "No description provided.";
       let displayDesc = rawDesc;
 
-      // Jika bukan bahasa Inggris, jalankan proses translate
+      // Translate jika bukan EN
       if (selectedLang !== "en") {
         displayDesc = await translateText(rawDesc, selectedLang);
       }
 
-      // Deteksi bahasa pemrograman utama untuk badge
       const langBadge = repo.language ? `<span class="badge">${repo.language}</span>` : `<span class="badge">Docs / Markdown</span>`;
 
-      // Buat elemen kartu
       const card = document.createElement("div");
       card.className = "card";
       card.innerHTML = `
@@ -397,12 +443,21 @@
     }
   }
 
-  // 5. Event Listener untuk Dropdown Bahasa
+  // 5. Event Listeners
   langSelector.addEventListener("change", async () => {
-    // Tampilkan skeleton ulang saat sedang memproses translate massal agar user tahu sistem sedang bekerja
     if (repositories.length > 0) {
        gridContainer.innerHTML = `<div class="status-msg">Menerjemahkan / Translating... 🌍</div>`;
        await renderDashboard();
+    }
+  });
+
+  searchInput.addEventListener("input", (e) => {
+    currentSearchQuery = e.target.value.toLowerCase();
+    
+    // Agar tidak memanggil API terus menerus saat mengetik cepat (debouncing ringan)
+    // Untuk performa, kita render ulang langsung karena data sudah ada di variabel 'repositories'
+    if(repositories.length > 0) {
+       renderDashboard(); 
     }
   });
 
